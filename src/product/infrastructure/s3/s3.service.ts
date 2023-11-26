@@ -2,9 +2,10 @@ import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { MultipartFile } from '@fastify/multipart';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { IStorageService } from '../../domain/service/storage.service';
 
 @Injectable()
-export class S3Service {
+export class S3Service implements IStorageService {
   private s3Client: S3Client;
 
   constructor(private readonly configService: ConfigService) {

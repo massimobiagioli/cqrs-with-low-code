@@ -12,11 +12,11 @@ export class S3Service {
     this.s3Client = new S3Client();
   }
 
-  async uploadFile(data: MultipartFile) {
+  async uploadFile(data: MultipartFile, storageKey: string): Promise<void> {
     await this.s3Client.send(
       new PutObjectCommand({
         Bucket: BUCKET_NAME,
-        Key: data.fieldname,
+        Key: storageKey,
         Body: await data.toBuffer(),
       }),
     );

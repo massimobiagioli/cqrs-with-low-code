@@ -26,7 +26,12 @@ export class ProductController {
     }
 
     const csvData = await req.file();
-    await this.commandBus.execute(new ImportCsvCommand(csvData));
+
+    let now = new Date();
+    now = new Date(now.getTime() - now.getTimezoneOffset() * 60 * 1000);
+    const storageKey = `${now.toISOString()}-${csvData.filename}`;
+
+    await this.commandBus.execute(new ImportCsvCommand(csvData, storageKey));
 
     res.send();
   }

@@ -1,12 +1,15 @@
 import { ImportCsvCommand } from '../command/import-csv-command';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { S3Service } from '../../infrastructure/s3/s3.service';
+import { IStorageService } from '../../domain/service/storage.service';
+import { Inject } from '@nestjs/common';
 
 @CommandHandler(ImportCsvCommand)
 export class ImportCsvHandler implements ICommandHandler<ImportCsvCommand> {
-  constructor(private readonly s3Service: S3Service) {}
+  constructor(
+    @Inject(IStorageService) private readonly storageService: IStorageService,
+  ) {}
 
-  async execute({ data }: ImportCsvCommand) {
-    await this.s3Service.uploadFile(data);
+  async execute({ data, storageKey }: ImportCsvCommand) {
+    await this.storageService.uploadFile(data, storageKey);
   }
 }

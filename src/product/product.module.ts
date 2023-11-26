@@ -4,11 +4,13 @@ import { ImportCsvHandler } from './application/command-handler/import-csv-handl
 import { CqrsModule } from '@nestjs/cqrs';
 import { S3Service } from './infrastructure/s3/s3.service';
 import { IStorageService } from './domain/service/storage.service';
+import { ConfigModule } from '@nestjs/config';
+import { HttpModule } from '@nestjs/axios';
 
 export const CommandHandlers = [ImportCsvHandler];
 
 @Module({
-  imports: [CqrsModule],
+  imports: [CqrsModule, ConfigModule, HttpModule],
   controllers: [ProductController],
   providers: [
     ...CommandHandlers,
